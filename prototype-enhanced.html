@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Threefold Credit Union</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+        :root {
+            --surface-primary: #16423C;
+            --surface-primary-hover: #1a4e47;
+            --surface-secondary: #6A9C89;
+            --surface-accent: #C4DAD2;
+            --surface-elevated: #ffffff;
+            --surface-base: #fafaf9;
+            --surface-subtle: #f5f5f4;
+            --text-default: #0a0a0a;
+            --text-secondary: #525252;
+            --text-tertiary: #737373;
+            --text-inverse: #ffffff;
+            --border-default: #e5e5e5;
+            --border-subtle: #f5f5f4;
+            --border-strong: #d4d4d4;
+            --accent-purple: #8B5CF6;
+            --accent-amber: #F59E0B;
+            --accent-green: #10B981;
+            --accent-blue: #3B82F6;
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+            --space-3xl: 4rem;
+            --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+            --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.25rem;
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            --radius-full: 9999px;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-size: var(--text-base);
+            line-height: 1.6;
+            color: var(--text-default);
+            background: var(--surface-base);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .icon-sm {
+            width: 20px;
+            height: 20px;
+        }
+
+        .icon-lg {
+            width: 28px;
+            height: 28px;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(250, 250, 249, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-lg) var(--space-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: var(--text-xl);
+            font-weight: 600;
+            color: var(--surface-primary);
+            letter-spacing: -0.02em;
+            text-decoration: none;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: var(--space-md);
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--surface-primary);
+            color: var(--text-inverse);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: var(--text-sm);
+        }
+
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-2xl) var(--space-xl);
+        }
+
+        .dashboard-header {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .dashboard-title {
+            font-family: var(--font-display);
+            font-size: var(--text-3xl);
+            font-weight: 600;
+            color: var(--text-default);
+            margin-bottom: var(--space-sm);
+            letter-spacing: -0.02em;
+        }
+
+        .dashboard-subtitle {
+            color: var(--text-secondary);
+            font-size: var(--text-base);
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            gap: var(--space-md);
+            margin-bottom: var(--space-2xl);
+            border-bottom: 2px solid var(--border-subtle);
+        }
+
+        .tab-btn {
+            padding: var(--space-md) var(--space-lg);
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            font-family: var(--font-body);
+            font-size: var(--text-base);
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-default);
+        }
+
+        .tab-btn.active {
+            color: var(--surface-primary);
+            border-bottom-color: var(--surface-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Existing styles from prototype.html ... */
+        .card {
+            background: var(--surface-elevated);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: var(--text-xl);
+            font-weight: 600;
+            color: var(--text-default);
+        }
+
+        /* Network Map Styles */
+        .network-map {
+            position: relative;
+            min-height: 400px;
+            background: var(--surface-subtle);
+            border-radius: var(--radius-lg);
+            padding: var(--space-2xl);
+            overflow: hidden;
+        }
+
+        .network-node {
+            position: absolute;
+            width: 120px;
+            text-align: center;
+        }
+
+        .node-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--surface-elevated);
+            border: 3px solid var(--surface-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-sm);
+            box-shadow: var(--shadow-md);
+        }
+
+        .node-label {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--text-default);
+        }
+
+        .node-amount {
+            font-size: var(--text-xs);
+            color: var(--text-secondary);
+        }
+
+        .network-flow {
+            position: absolute;
+            height: 2px;
+            background: var(--surface-secondary);
+            transform-origin: left center;
+        }
+
+        .network-flow::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -4px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid var(--surface-secondary);
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+
+        /* Analytics Charts */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .chart-container {
+            background: var(--surface-elevated);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+        }
+
+        .chart-title {
+            font-family: var(--font-display);
+            font-size: var(--text-lg);
+            font-weight: 600;
+            color: var(--text-default);
+            margin-bottom: var(--space-lg);
+        }
+
+        /* Payroll Styles */
+        .staff-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .staff-table thead th {
+            text-align: left;
+            padding: var(--space-md);
+            border-bottom: 2px solid var(--border-default);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .staff-table tbody td {
+            padding: var(--space-lg) var(--space-md);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .staff-name {
+            font-weight: 600;
+            color: var(--text-default);
+        }
+
+        .staff-role {
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+        }
+
+        .payment-split {
+            display: flex;
+            gap: var(--space-sm);
+            align-items: center;
+        }
+
+        .payment-badge {
+            padding: var(--space-xs) var(--space-sm);
+            background: var(--surface-subtle);
+            border-radius: var(--radius-sm);
+            font-size: var(--text-xs);
+            font-weight: 600;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--surface-elevated);
+            color: var(--text-default);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            border-color: var(--surface-secondary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-card {
+            background: var(--surface-subtle);
+            padding: var(--space-lg);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-md);
+        }
+
+        .stat-label {
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: var(--text-2xl);
+            font-weight: 600;
+            color: var(--text-default);
+        }
+
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">Threefold Credit Union</a>
+            <div class="header-actions">
+                <a href="index.html" class="back-btn">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back to Home
+                </a>
+                <div class="user-avatar">DS</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Welcome back, Dr. Smith</h1>
+            <p class="dashboard-subtitle">Comprehensive financial overview with Anthrobucks insights</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
+            <button class="tab-btn" onclick="switchTab('analytics')">Analytics</button>
+            <button class="tab-btn" onclick="switchTab('network')">AB Network</button>
+            <button class="tab-btn" onclick="switchTab('payroll')">Payroll</button>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="overview-tab" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Account Summary</h2>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-xl);">
+                    <div class="stat-card">
+                        <div class="stat-label">Total USD Balance</div>
+                        <div class="stat-value">$36,988.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Anthrobucks Balance</div>
+                        <div class="stat-value">AB 1,250</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Monthly Revenue</div>
+                        <div class="stat-value">$42,500</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Monthly Expenses</div>
+                        <div class="stat-value">$28,350</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Quick Insights</h2>
+                </div>
+                <ul style="list-style: none;">
+                    <li style="padding: var(--space-md) 0; border-bottom: 1px solid var(--border-subtle);">
+                        ✓ Your AB circulation rate is <strong>2.3x the network average</strong>
+                    </li>
+                    <li style="padding: var(--space-md) 0; border-bottom: 1px solid var(--border-subtle);">
+                        ✓ <strong>15% of patient payments</strong> now in Anthrobucks
+                    </li>
+                    <li style="padding: var(--space-md) 0; border-bottom: 1px solid var(--border-subtle);">
+                        ✓ Your AB supported <strong>5 community businesses</strong> this month
+                    </li>
+                    <li style="padding: var(--space-md) 0;">
+                        ✓ <strong>AB 420 transformed to Leaven</strong> supporting social initiatives
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div id="analytics-tab" class="tab-content">
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h3 class="chart-title">Revenue Trends (USD vs AB)</h3>
+                    <canvas id="revenueChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title">Expense Breakdown</h3>
+                    <canvas id="expenseChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-container" style="margin-bottom: var(--space-xl);">
+                <h3 class="chart-title">Cash Flow Projection</h3>
+                <canvas id="cashFlowChart"></canvas>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Financial Summary</h2>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-xl); margin-top: var(--space-lg);">
+                    <div>
+                        <div style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-xs);">Total Revenue (6 months)</div>
+                        <div style="font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 600; color: var(--accent-green);">$255,000</div>
+                    </div>
+                    <div>
+                        <div style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-xs);">Total Expenses (6 months)</div>
+                        <div style="font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 600; color: var(--text-default);">$170,100</div>
+                    </div>
+                    <div>
+                        <div style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-xs);">Net Profit (6 months)</div>
+                        <div style="font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 600; color: var(--surface-primary);">$84,900</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Map Tab -->
+        <div id="network-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Your Anthrobucks Network Flow</h2>
+                </div>
+                <div class="network-map" id="networkMap">
+                    <svg width="100%" height="400" style="position: absolute; top: 0; left: 0; z-index: 1;">
+                        <!-- Flow lines -->
+                        <line x1="10%" y1="50%" x2="30%" y2="30%" stroke="var(--surface-secondary)" stroke-width="3" stroke-dasharray="5,5">
+                            <animate attributeName="stroke-dashoffset" from="10" to="0" dur="2s" repeatCount="indefinite"/>
+                        </line>
+                        <line x1="30%" y1="30%" x2="50%" y2="20%" stroke="var(--surface-secondary)" stroke-width="3" stroke-dasharray="5,5">
+                            <animate attributeName="stroke-dashoffset" from="10" to="0" dur="2s" repeatCount="indefinite"/>
+                        </line>
+                        <line x1="50%" y1="20%" x2="70%" y2="30%" stroke="var(--surface-secondary)" stroke-width="3" stroke-dasharray="5,5">
+                            <animate attributeName="stroke-dashoffset" from="10" to="0" dur="2s" repeatCount="indefinite"/>
+                        </line>
+                        <line x1="70%" y1="30%" x2="90%" y2="50%" stroke="var(--surface-secondary)" stroke-width="3" stroke-dasharray="5,5">
+                            <animate attributeName="stroke-dashoffset" from="10" to="0" dur="2s" repeatCount="indefinite"/>
+                        </line>
+                        <line x1="90%" y1="50%" x2="70%" y2="70%" stroke="var(--surface-secondary)" stroke-width="3" stroke-dasharray="5,5">
+                            <animate attributeName="stroke-dashoffset" from="10" to="0" dur="2s" repeatCount="indefinite"/>
+                        </line>
+                        <line x1="70%" y1="70%" x2="50%" y2="80%" stroke="var(--surface-secondary)" stroke-width="3" stroke-dasharray="5,5">
+                            <animate attributeName="stroke-dashoffset" from="10" to="0" dur="2s" repeatCount="indefinite"/>
+                        </line>
+                        <line x1="50%" y1="80%" x2="30%" y2="70%" stroke="var(--surface-secondary)" stroke-width="3" stroke-dasharray="5,5">
+                            <animate attributeName="stroke-dashoffset" from="10" to="0" dur="2s" repeatCount="indefinite"/>
+                        </line>
+                        <line x1="30%" y1="70%" x2="10%" y2="50%" stroke="var(--surface-secondary)" stroke-width="3" stroke-dasharray="5,5">
+                            <animate attributeName="stroke-dashoffset" from="10" to="0" dur="2s" repeatCount="indefinite"/>
+                        </line>
+                    </svg>
+
+                    <!-- Network nodes -->
+                    <div class="network-node" style="left: 5%; top: 35%; z-index: 2;">
+                        <div class="node-circle" style="background: linear-gradient(135deg, var(--surface-primary), var(--surface-secondary));">
+                            <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke: white;">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                            </svg>
+                        </div>
+                        <div class="node-label">You</div>
+                        <div class="node-amount">AB 1,250</div>
+                    </div>
+
+                    <div class="network-node" style="left: 25%; top: 15%; z-index: 2;">
+                        <div class="node-circle">
+                            <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke: var(--surface-primary);">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            </svg>
+                        </div>
+                        <div class="node-label">Farm</div>
+                        <div class="node-amount">AB 45</div>
+                    </div>
+
+                    <div class="network-node" style="left: 45%; top: 5%; z-index: 2;">
+                        <div class="node-circle">
+                            <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke: var(--surface-primary);">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                        </div>
+                        <div class="node-label">School</div>
+                        <div class="node-amount">AB 120</div>
+                    </div>
+
+                    <div class="network-node" style="left: 65%; top: 15%; z-index: 2;">
+                        <div class="node-circle">
+                            <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke: var(--surface-primary);">
+                                <path d="M9 18V5l12-2v13"/>
+                            </svg>
+                        </div>
+                        <div class="node-label">Therapist</div>
+                        <div class="node-amount">AB 95</div>
+                    </div>
+
+                    <div class="network-node" style="left: 85%; top: 35%; z-index: 2;">
+                        <div class="node-circle">
+                            <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke: var(--surface-primary);">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                            </svg>
+                        </div>
+                        <div class="node-label">Patient</div>
+                        <div class="node-amount">AB 85</div>
+                    </div>
+
+                    <div class="network-node" style="left: 65%; top: 55%; z-index: 2;">
+                        <div class="node-circle">
+                            <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke: var(--surface-primary);">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <div class="node-label">Store</div>
+                        <div class="node-amount">AB 65</div>
+                    </div>
+
+                    <div class="network-node" style="left: 45%; top: 65%; z-index: 2;">
+                        <div class="node-circle">
+                            <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke: var(--surface-primary);">
+                                <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6"/>
+                                <path d="M21 3l-9 9"/>
+                            </svg>
+                        </div>
+                        <div class="node-label">Initiative</div>
+                        <div class="node-amount">Leaven</div>
+                    </div>
+
+                    <div class="network-node" style="left: 25%; top: 55%; z-index: 2;">
+                        <div class="node-circle">
+                            <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke: var(--surface-primary);">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                            </svg>
+                        </div>
+                        <div class="node-label">Artisan</div>
+                        <div class="node-amount">AB 40</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: var(--space-xl);">
+                <h2 class="card-title">Network Statistics</h2>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-xl); margin-top: var(--space-lg);">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Transactions</div>
+                        <div class="stat-value">47</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Network Partners</div>
+                        <div class="stat-value">8</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">AB Circulated</div>
+                        <div class="stat-value">AB 1,680</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Leaven Created</div>
+                        <div class="stat-value">AB 420</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payroll Tab -->
+        <div id="payroll-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Staff & Payroll</h2>
+                    <button style="padding: var(--space-sm) var(--space-lg); background: var(--surface-primary); color: white; border: none; border-radius: var(--radius-md); font-weight: 600; cursor: pointer;">
+                        + Add Staff
+                    </button>
+                </div>
+
+                <table class="staff-table">
+                    <thead>
+                        <tr>
+                            <th>Staff Member</th>
+                            <th>Monthly Salary</th>
+                            <th>Payment Split</th>
+                            <th>Last Paid</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="staff-name">Sarah Johnson</div>
+                                <div class="staff-role">Office Manager</div>
+                            </td>
+                            <td style="font-weight: 600;">$4,200/mo</td>
+                            <td>
+                                <div class="payment-split">
+                                    <span class="payment-badge" style="background: var(--surface-subtle);">$3,780 USD</span>
+                                    <span class="payment-badge" style="background: #e0e7ff; color: #4f46e5;">AB 420</span>
+                                </div>
+                            </td>
+                            <td style="color: var(--text-secondary);">Feb 1, 2026</td>
+                            <td>
+                                <button style="padding: var(--space-xs) var(--space-md); background: none; border: 1px solid var(--border-default); border-radius: var(--radius-sm); cursor: pointer;">Edit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="staff-name">Tom Martinez</div>
+                                <div class="staff-role">Nurse Practitioner</div>
+                            </td>
+                            <td style="font-weight: 600;">$5,800/mo</td>
+                            <td>
+                                <div class="payment-split">
+                                    <span class="payment-badge" style="background: var(--surface-subtle);">$5,800 USD</span>
+                                </div>
+                            </td>
+                            <td style="color: var(--text-secondary);">Feb 1, 2026</td>
+                            <td>
+                                <button style="padding: var(--space-xs) var(--space-md); background: none; border: 1px solid var(--border-default); border-radius: var(--radius-sm); cursor: pointer;">Edit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="staff-name">Lisa Chen</div>
+                                <div class="staff-role">Eurythmy Therapist</div>
+                            </td>
+                            <td style="font-weight: 600;">$5,200/mo</td>
+                            <td>
+                                <div class="payment-split">
+                                    <span class="payment-badge" style="background: var(--surface-subtle);">$4,680 USD</span>
+                                    <span class="payment-badge" style="background: #e0e7ff; color: #4f46e5;">AB 520</span>
+                                </div>
+                            </td>
+                            <td style="color: var(--text-secondary);">Feb 1, 2026</td>
+                            <td>
+                                <button style="padding: var(--space-xs) var(--space-md); background: none; border: 1px solid var(--border-default); border-radius: var(--radius-sm); cursor: pointer;">Edit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="staff-name">Michael Brown</div>
+                                <div class="staff-role">Front Desk Assistant (PT)</div>
+                            </td>
+                            <td style="font-weight: 600;">$1,625/mo</td>
+                            <td>
+                                <div class="payment-split">
+                                    <span class="payment-badge" style="background: var(--surface-subtle);">$1,625 USD</span>
+                                </div>
+                            </td>
+                            <td style="color: var(--text-secondary);">Feb 1, 2026</td>
+                            <td>
+                                <button style="padding: var(--space-xs) var(--space-md); background: none; border: 1px solid var(--border-default); border-radius: var(--radius-sm); cursor: pointer;">Edit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="staff-name">Emma Davis</div>
+                                <div class="staff-role">Medical Assistant (PT)</div>
+                            </td>
+                            <td style="font-weight: 600;">$1,625/mo</td>
+                            <td>
+                                <div class="payment-split">
+                                    <span class="payment-badge" style="background: var(--surface-subtle);">$1,625 USD</span>
+                                </div>
+                            </td>
+                            <td style="color: var(--text-secondary);">Feb 1, 2026</td>
+                            <td>
+                                <button style="padding: var(--space-xs) var(--space-md); background: none; border: 1px solid var(--border-default); border-radius: var(--radius-sm); cursor: pointer;">Edit</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl);">
+                <div class="card">
+                    <h2 class="card-title">Payroll Summary</h2>
+                    <div class="stat-card" style="margin-top: var(--space-lg);">
+                        <div class="stat-label">Total Monthly Payroll</div>
+                        <div class="stat-value">$18,450</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Paid in USD</div>
+                        <div class="stat-value">$17,510</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Paid in Anthrobucks</div>
+                        <div class="stat-value">AB 940</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">Benefits of AB Payroll</h2>
+                    <ul style="list-style: none; margin-top: var(--space-lg);">
+                        <li style="padding: var(--space-md); background: var(--surface-subtle); border-radius: var(--radius-md); margin-bottom: var(--space-md);">
+                            ✓ <strong>Strengthens community</strong> - Staff spend within network
+                        </li>
+                        <li style="padding: var(--space-md); background: var(--surface-subtle); border-radius: var(--radius-md); margin-bottom: var(--space-md);">
+                            ✓ <strong>Tax advantages</strong> - Consult your accountant
+                        </li>
+                        <li style="padding: var(--space-md); background: var(--surface-subtle); border-radius: var(--radius-md);">
+                            ✓ <strong>Employee satisfaction</strong> - Values-aligned compensation
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Tab switching
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+
+            // Initialize charts when analytics tab is shown
+            if (tabName === 'analytics') {
+                setTimeout(initCharts, 100);
+            }
+        }
+
+        // Initialize charts
+        function initCharts() {
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart');
+            if (revenueCtx && !revenueCtx.chart) {
+                revenueCtx.chart = new Chart(revenueCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{
+                            label: 'USD Revenue',
+                            data: [38000, 40000, 39500, 41000, 42000, 42500],
+                            borderColor: '#16423C',
+                            backgroundColor: 'rgba(22, 66, 60, 0.1)',
+                            tension: 0.4
+                        }, {
+                            label: 'AB Revenue (USD equiv)',
+                            data: [2000, 2800, 3200, 3800, 4200, 4500],
+                            borderColor: '#8B5CF6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Expense Chart
+            const expenseCtx = document.getElementById('expenseChart');
+            if (expenseCtx && !expenseCtx.chart) {
+                expenseCtx.chart = new Chart(expenseCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Payroll', 'Rent & Utilities', 'Supplies', 'Insurance', 'Other'],
+                        datasets: [{
+                            data: [18450, 3200, 2100, 1800, 2800],
+                            backgroundColor: [
+                                '#16423C',
+                                '#6A9C89',
+                                '#C4DAD2',
+                                '#8B5CF6',
+                                '#F59E0B'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'right'
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Cash Flow Chart
+            const cashFlowCtx = document.getElementById('cashFlowChart');
+            if (cashFlowCtx && !cashFlowCtx.chart) {
+                cashFlowCtx.chart = new Chart(cashFlowCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul (proj)', 'Aug (proj)', 'Sep (proj)'],
+                        datasets: [{
+                            label: 'Revenue',
+                            data: [40000, 42800, 42700, 44800, 46200, 47000, 48000, 49000, 50000],
+                            backgroundColor: '#10B981'
+                        }, {
+                            label: 'Expenses',
+                            data: [28350, 28350, 28350, 28350, 28350, 28350, 28350, 28350, 28350],
+                            backgroundColor: '#F59E0B'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
