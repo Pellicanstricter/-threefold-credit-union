@@ -282,6 +282,36 @@
             border-bottom: 5px solid transparent;
         }
 
+        /* Regional Filter Buttons */
+        .region-filter {
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--surface-elevated);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: var(--text-sm);
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .region-filter:hover {
+            background: var(--surface-subtle);
+            border-color: var(--surface-secondary);
+            color: var(--text-default);
+        }
+
+        .region-filter.active {
+            background: var(--surface-primary);
+            border-color: var(--surface-primary);
+            color: var(--text-inverse);
+        }
+
+        .network-node.hidden {
+            display: none;
+        }
+
         /* Analytics Charts */
         .charts-grid {
             display: grid;
@@ -670,6 +700,41 @@
                 <div class="card-header">
                     <h2 class="card-title">Your Anthrobucks Network Flow</h2>
                 </div>
+
+                <!-- Regional Filters -->
+                <div style="padding: 0 var(--space-xl) var(--space-lg); display: flex; gap: var(--space-sm); flex-wrap: wrap; align-items: center;">
+                    <span style="font-weight: 600; color: var(--text-secondary); font-size: var(--text-sm);">Filter by Region:</span>
+                    <button class="region-filter active" onclick="filterByRegion('all')">All Regions</button>
+                    <button class="region-filter" onclick="filterByRegion('pacific-northwest')">Pacific Northwest</button>
+                    <button class="region-filter" onclick="filterByRegion('west-coast')">West Coast</button>
+                    <button class="region-filter" onclick="filterByRegion('southwest')">Southwest</button>
+                    <button class="region-filter" onclick="filterByRegion('midwest')">Midwest</button>
+                    <button class="region-filter" onclick="filterByRegion('northeast')">Northeast</button>
+                </div>
+
+                <!-- USA Map Overview -->
+                <div style="padding: 0 var(--space-xl) var(--space-xl);">
+                    <div style="background: var(--surface-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-lg);">
+                        <div style="font-size: var(--text-sm); font-weight: 600; color: var(--text-secondary); margin-bottom: var(--space-md);">Network Coverage</div>
+                        <svg viewBox="0 0 800 500" style="width: 100%; height: auto; max-height: 200px;">
+                            <!-- Simplified USA outline -->
+                            <path d="M 50 200 L 100 180 L 150 200 L 180 180 L 200 200 L 250 190 L 300 210 L 350 200 L 400 220 L 450 210 L 500 230 L 550 220 L 600 240 L 650 230 L 700 250 L 720 270 L 750 280 L 750 350 L 700 360 L 650 350 L 600 370 L 550 360 L 500 380 L 450 370 L 400 360 L 350 370 L 300 350 L 250 360 L 200 350 L 150 340 L 100 330 L 50 320 Z"
+                                  fill="#f5f5f4" stroke="#d4d4d4" stroke-width="2"/>
+
+                            <!-- Pacific Northwest region (highlighted) -->
+                            <circle cx="120" cy="220" r="30" fill="var(--surface-primary)" opacity="0.3" class="region-highlight pacific-northwest"/>
+                            <circle cx="120" cy="220" r="8" fill="var(--surface-primary)" class="region-marker"/>
+                            <text x="120" y="280" text-anchor="middle" font-size="12" font-weight="600" fill="var(--surface-primary)">Pacific NW</text>
+                            <text x="120" y="295" text-anchor="middle" font-size="10" fill="var(--text-secondary)">8 active members</text>
+
+                            <!-- Other regions (placeholders for future expansion) -->
+                            <circle cx="200" cy="300" r="20" fill="#e5e5e5" opacity="0.3"/>
+                            <circle cx="400" cy="280" r="20" fill="#e5e5e5" opacity="0.3"/>
+                            <circle cx="600" cy="260" r="20" fill="#e5e5e5" opacity="0.3"/>
+                        </svg>
+                    </div>
+                </div>
+
                 <div class="network-map" id="networkMap">
                     <svg width="100%" height="400" style="position: absolute; top: 0; left: 0; z-index: 1;">
                         <!-- Flow lines -->
@@ -700,7 +765,7 @@
                     </svg>
 
                     <!-- Network nodes -->
-                    <div class="network-node" style="left: 5%; top: 35%; z-index: 2;">
+                    <div class="network-node" data-region="pacific-northwest" style="left: 5%; top: 35%; z-index: 2;">
                         <div class="node-circle" style="background: linear-gradient(135deg, var(--surface-primary), var(--surface-secondary));">
                             <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke: white;">
                                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
@@ -711,7 +776,7 @@
                         <div class="node-amount">Portland, OR • AB 1,250</div>
                     </div>
 
-                    <div class="network-node" style="left: 25%; top: 15%; z-index: 2;">
+                    <div class="network-node" data-region="pacific-northwest" style="left: 25%; top: 15%; z-index: 2;">
                         <div class="node-circle">
                             <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke: var(--surface-primary);">
                                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -721,7 +786,7 @@
                         <div class="node-amount">Hillsboro, OR • AB 45</div>
                     </div>
 
-                    <div class="network-node" style="left: 45%; top: 5%; z-index: 2;">
+                    <div class="network-node" data-region="pacific-northwest" style="left: 45%; top: 5%; z-index: 2;">
                         <div class="node-circle">
                             <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke: var(--surface-primary);">
                                 <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
@@ -731,7 +796,7 @@
                         <div class="node-amount">Portland, OR • AB 120</div>
                     </div>
 
-                    <div class="network-node" style="left: 65%; top: 15%; z-index: 2;">
+                    <div class="network-node" data-region="pacific-northwest" style="left: 65%; top: 15%; z-index: 2;">
                         <div class="node-circle">
                             <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke: var(--surface-primary);">
                                 <path d="M9 18V5l12-2v13"/>
@@ -741,7 +806,7 @@
                         <div class="node-amount">Beaverton, OR • AB 95</div>
                     </div>
 
-                    <div class="network-node" style="left: 85%; top: 35%; z-index: 2;">
+                    <div class="network-node" data-region="pacific-northwest" style="left: 85%; top: 35%; z-index: 2;">
                         <div class="node-circle">
                             <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke: var(--surface-primary);">
                                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -752,7 +817,7 @@
                         <div class="node-amount">Lake Oswego, OR • AB 85</div>
                     </div>
 
-                    <div class="network-node" style="left: 65%; top: 55%; z-index: 2;">
+                    <div class="network-node" data-region="pacific-northwest" style="left: 65%; top: 55%; z-index: 2;">
                         <div class="node-circle">
                             <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke: var(--surface-primary);">
                                 <circle cx="12" cy="12" r="10"/>
@@ -763,7 +828,7 @@
                         <div class="node-amount">Eugene, OR • AB 65</div>
                     </div>
 
-                    <div class="network-node" style="left: 45%; top: 65%; z-index: 2;">
+                    <div class="network-node" data-region="pacific-northwest" style="left: 45%; top: 65%; z-index: 2;">
                         <div class="node-circle">
                             <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke: var(--surface-primary);">
                                 <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6"/>
@@ -774,7 +839,7 @@
                         <div class="node-amount">Portland, OR • Leaven</div>
                     </div>
 
-                    <div class="network-node" style="left: 25%; top: 55%; z-index: 2;">
+                    <div class="network-node" data-region="pacific-northwest" style="left: 25%; top: 55%; z-index: 2;">
                         <div class="node-circle">
                             <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke: var(--surface-primary);">
                                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
@@ -1128,6 +1193,37 @@
                     input.value = '';
                 }
             }
+        }
+
+        // Regional filtering
+        function filterByRegion(region) {
+            // Update button states
+            document.querySelectorAll('.region-filter').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Filter network nodes
+            const nodes = document.querySelectorAll('.network-node');
+            nodes.forEach(node => {
+                if (region === 'all' || node.getAttribute('data-region') === region) {
+                    node.classList.remove('hidden');
+                } else {
+                    node.classList.add('hidden');
+                }
+            });
+
+            // Update map highlights
+            const highlights = document.querySelectorAll('.region-highlight');
+            highlights.forEach(highlight => {
+                if (region === 'all') {
+                    highlight.style.opacity = '0.3';
+                } else if (highlight.classList.contains(region)) {
+                    highlight.style.opacity = '0.5';
+                } else {
+                    highlight.style.opacity = '0.1';
+                }
+            });
         }
     </script>
 
