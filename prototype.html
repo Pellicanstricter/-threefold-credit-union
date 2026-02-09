@@ -8,7 +8,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
         :root {
-            /* Color System */
             --surface-primary: #16423C;
             --surface-primary-hover: #1a4e47;
             --surface-secondary: #6A9C89;
@@ -31,7 +30,6 @@
             --accent-green: #10B981;
             --accent-blue: #3B82F6;
 
-            /* Spacing */
             --space-xs: 0.25rem;
             --space-sm: 0.5rem;
             --space-md: 1rem;
@@ -40,7 +38,6 @@
             --space-2xl: 3rem;
             --space-3xl: 4rem;
 
-            /* Typography */
             --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
             --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
@@ -53,17 +50,17 @@
             --text-3xl: 1.875rem;
             --text-4xl: 2.25rem;
 
-            /* Radius */
             --radius-sm: 0.375rem;
             --radius-md: 0.5rem;
             --radius-lg: 0.75rem;
             --radius-xl: 1rem;
             --radius-2xl: 1.5rem;
+            --radius-full: 9999px;
 
-            /* Shadows */
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
             --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
             --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
         }
 
         * {
@@ -79,6 +76,27 @@
             color: var(--text-default);
             background: var(--surface-base);
             -webkit-font-smoothing: antialiased;
+        }
+
+        /* Icon styles */
+        .icon {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .icon-sm {
+            width: 20px;
+            height: 20px;
+        }
+
+        .icon-lg {
+            width: 28px;
+            height: 28px;
         }
 
         /* Header */
@@ -197,7 +215,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: var(--text-xl);
+            color: var(--surface-primary);
         }
 
         .account-balance {
@@ -231,7 +249,7 @@
             font-weight: 600;
         }
 
-        /* Anthrobucks Card Special Styling */
+        /* Anthrobucks Card */
         .anthrobucks-card {
             background: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
             color: var(--text-inverse);
@@ -242,6 +260,11 @@
         .anthrobucks-card .account-balance,
         .anthrobucks-card .account-number,
         .anthrobucks-card .account-status {
+            color: var(--text-inverse);
+        }
+
+        .anthrobucks-card .account-icon {
+            background: rgba(255, 255, 255, 0.2);
             color: var(--text-inverse);
         }
 
@@ -290,7 +313,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: var(--text-xl);
+            color: var(--surface-primary);
+            flex-shrink: 0;
         }
 
         .action-content h3 {
@@ -305,7 +329,7 @@
             color: var(--text-secondary);
         }
 
-        /* Transactions Section */
+        /* Transactions */
         .transactions-section {
             background: var(--surface-elevated);
             border: 1px solid var(--border-default);
@@ -335,11 +359,6 @@
             font-weight: 600;
         }
 
-        .view-all:hover {
-            color: var(--surface-primary);
-        }
-
-        /* Transaction List */
         .transaction-list {
             list-style: none;
         }
@@ -371,7 +390,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: var(--text-lg);
+            color: var(--text-secondary);
         }
 
         .transaction-info h4 {
@@ -396,97 +415,7 @@
             color: var(--accent-green);
         }
 
-        .transaction-amount.negative {
-            color: var(--text-default);
-        }
-
-        /* Network Section */
-        .network-section {
-            background: var(--surface-elevated);
-            border: 1px solid var(--border-default);
-            border-radius: var(--radius-xl);
-            padding: var(--space-xl);
-        }
-
-        .network-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: var(--space-md);
-            margin-top: var(--space-lg);
-        }
-
-        .network-card {
-            padding: var(--space-lg);
-            background: var(--surface-subtle);
-            border-radius: var(--radius-lg);
-            text-align: center;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-
-        .network-card:hover {
-            background: var(--surface-accent);
-            transform: translateY(-2px);
-        }
-
-        .network-icon {
-            font-size: var(--text-3xl);
-            margin-bottom: var(--space-sm);
-        }
-
-        .network-card h4 {
-            font-size: var(--text-sm);
-            font-weight: 600;
-            color: var(--text-default);
-            margin-bottom: var(--space-xs);
-        }
-
-        .network-card p {
-            font-size: var(--text-xs);
-            color: var(--text-secondary);
-        }
-
-        /* Anthrobucks Info Banner */
-        .info-banner {
-            background: linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%);
-            color: var(--text-inverse);
-            padding: var(--space-xl);
-            border-radius: var(--radius-xl);
-            margin-bottom: var(--space-2xl);
-        }
-
-        .info-banner h3 {
-            font-family: var(--font-display);
-            font-size: var(--text-xl);
-            font-weight: 600;
-            margin-bottom: var(--space-sm);
-        }
-
-        .info-banner p {
-            opacity: 0.95;
-            line-height: 1.6;
-        }
-
-        .info-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--space-xl);
-            margin-top: var(--space-lg);
-        }
-
-        .info-stat h4 {
-            font-family: var(--font-display);
-            font-size: var(--text-2xl);
-            font-weight: 600;
-            margin-bottom: var(--space-xs);
-        }
-
-        .info-stat p {
-            font-size: var(--text-sm);
-            opacity: 0.9;
-        }
-
-        /* Back to Home Button */
+        /* Back Button */
         .back-btn {
             display: inline-flex;
             align-items: center;
@@ -507,6 +436,183 @@
             box-shadow: var(--shadow-sm);
         }
 
+        /* AI Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: var(--space-xl);
+            right: var(--space-xl);
+            z-index: 1000;
+        }
+
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            background: var(--surface-primary);
+            color: var(--text-inverse);
+            border: none;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-xl);
+            transition: all 0.2s ease;
+        }
+
+        .chat-button:hover {
+            background: var(--surface-primary-hover);
+            transform: scale(1.05);
+        }
+
+        .chat-container {
+            display: none;
+            position: fixed;
+            bottom: calc(var(--space-xl) + 70px);
+            right: var(--space-xl);
+            width: 400px;
+            height: 600px;
+            background: var(--surface-elevated);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-container.active {
+            display: flex;
+        }
+
+        .chat-header {
+            padding: var(--space-lg);
+            background: var(--surface-primary);
+            color: var(--text-inverse);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            font-family: var(--font-display);
+            font-size: var(--text-lg);
+            font-weight: 600;
+        }
+
+        .chat-close {
+            background: none;
+            border: none;
+            color: var(--text-inverse);
+            cursor: pointer;
+            padding: var(--space-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .chat-message {
+            max-width: 80%;
+            padding: var(--space-md) var(--space-lg);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-sm);
+            line-height: 1.5;
+        }
+
+        .chat-message.assistant {
+            background: var(--surface-subtle);
+            color: var(--text-default);
+            align-self: flex-start;
+        }
+
+        .chat-message.user {
+            background: var(--surface-primary);
+            color: var(--text-inverse);
+            align-self: flex-end;
+        }
+
+        .chat-suggestions {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            padding: 0 var(--space-lg) var(--space-lg);
+        }
+
+        .suggestion-btn {
+            padding: var(--space-md);
+            background: var(--surface-subtle);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            font-size: var(--text-sm);
+            color: var(--text-default);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .suggestion-btn:hover {
+            background: var(--surface-accent);
+            border-color: var(--surface-secondary);
+        }
+
+        .chat-input-container {
+            padding: var(--space-lg);
+            border-top: 1px solid var(--border-default);
+            background: var(--surface-elevated);
+        }
+
+        .chat-input {
+            width: 100%;
+            padding: var(--space-md);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: var(--text-sm);
+            resize: none;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--surface-secondary);
+        }
+
+        /* Info Banner */
+        .info-banner {
+            background: linear-gradient(135deg, var(--surface-primary) 0%, var(--surface-secondary) 100%);
+            color: var(--text-inverse);
+            padding: var(--space-xl);
+            border-radius: var(--radius-xl);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .info-banner h3 {
+            font-family: var(--font-display);
+            font-size: var(--text-xl);
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+        }
+
+        .info-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-xl);
+            margin-top: var(--space-lg);
+        }
+
+        .info-stat h4 {
+            font-family: var(--font-display);
+            font-size: var(--text-2xl);
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .dashboard {
@@ -521,8 +627,9 @@
                 flex-direction: column;
             }
 
-            .action-btn {
-                min-width: auto;
+            .chat-container {
+                width: calc(100vw - 2 * var(--space-xl));
+                height: calc(100vh - 150px);
             }
 
             .info-stats {
@@ -538,7 +645,10 @@
             <a href="index.html" class="logo">Threefold Credit Union</a>
             <div class="header-actions">
                 <a href="index.html" class="back-btn">
-                    ← Back to Home
+                    <svg class="icon icon-sm" viewBox="0 0 24 24">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back to Home
                 </a>
                 <div class="user-avatar">DS</div>
             </div>
@@ -558,7 +668,12 @@
                     <div>
                         <div class="account-type">Checking</div>
                     </div>
-                    <div class="account-icon">💳</div>
+                    <div class="account-icon">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <rect x="2" y="5" width="20" height="14" rx="2"/>
+                            <path d="M2 10h20"/>
+                        </svg>
+                    </div>
                 </div>
                 <div class="account-balance">$24,538.00</div>
                 <div class="account-info">
@@ -572,7 +687,11 @@
                     <div>
                         <div class="account-type">Savings</div>
                     </div>
-                    <div class="account-icon">🏦</div>
+                    <div class="account-icon">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
                 </div>
                 <div class="account-balance">$12,450.00</div>
                 <div class="account-info">
@@ -586,7 +705,11 @@
                     <div>
                         <div class="account-type">Anthrobucks Wallet</div>
                     </div>
-                    <div class="account-icon">🌱</div>
+                    <div class="account-icon">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        </svg>
+                    </div>
                 </div>
                 <div class="account-balance">AB 1,250</div>
                 <div class="account-info">
@@ -599,7 +722,7 @@
         <!-- Info Banner -->
         <div class="info-banner">
             <h3>Your Anthrobucks Impact</h3>
-            <p>Your AB have circulated through the community, supporting practitioners and social initiatives. This month, you've contributed to the living economy.</p>
+            <p>Your AB have circulated through the community, supporting practitioners and social initiatives.</p>
             <div class="info-stats">
                 <div class="info-stat">
                     <h4>AB 420</h4>
@@ -619,7 +742,11 @@
         <!-- Quick Actions -->
         <div class="quick-actions">
             <a href="#" class="action-btn">
-                <div class="action-icon">💸</div>
+                <div class="action-icon">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                    </svg>
+                </div>
                 <div class="action-content">
                     <h3>Send Money</h3>
                     <p>Transfer USD or AB</p>
@@ -627,7 +754,11 @@
             </a>
 
             <a href="#" class="action-btn">
-                <div class="action-icon">🔄</div>
+                <div class="action-icon">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M21 12a9 9 0 1 1-9-9M12 3v9l4 4"/>
+                    </svg>
+                </div>
                 <div class="action-content">
                     <h3>Buy Anthrobucks</h3>
                     <p>Convert USD to AB</p>
@@ -635,7 +766,11 @@
             </a>
 
             <a href="#" class="action-btn">
-                <div class="action-icon">🎁</div>
+                <div class="action-icon">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6M21 3l-9 9M21 3v7M21 3h-7"/>
+                    </svg>
+                </div>
                 <div class="action-content">
                     <h3>Donate Leaven</h3>
                     <p>Support social initiatives</p>
@@ -643,7 +778,12 @@
             </a>
 
             <a href="#" class="action-btn">
-                <div class="action-icon">🔍</div>
+                <div class="action-icon">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="M21 21l-4.35-4.35"/>
+                    </svg>
+                </div>
                 <div class="action-content">
                     <h3>Find Practitioners</h3>
                     <p>Discover AB network</p>
@@ -661,29 +801,41 @@
             <ul class="transaction-list">
                 <li class="transaction-item">
                     <div class="transaction-left">
-                        <div class="transaction-icon">🌱</div>
+                        <div class="transaction-icon">
+                            <svg class="icon icon-sm" viewBox="0 0 24 24">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                            </svg>
+                        </div>
                         <div class="transaction-info">
                             <h4>Green Valley Biodynamic Farm</h4>
                             <p>AB payment • Today at 2:45 PM</p>
                         </div>
                     </div>
-                    <div class="transaction-amount negative">- AB 45</div>
+                    <div class="transaction-amount">- AB 45</div>
                 </li>
 
                 <li class="transaction-item">
                     <div class="transaction-left">
-                        <div class="transaction-icon">🎵</div>
+                        <div class="transaction-icon">
+                            <svg class="icon icon-sm" viewBox="0 0 24 24">
+                                <path d="M9 18V5l12-2v13M6 14v8M6 14a3 3 0 1 1 0-6M6 22a3 3 0 1 0 0-6"/>
+                            </svg>
+                        </div>
                         <div class="transaction-info">
                             <h4>Waldorf School Music Program</h4>
                             <p>AB payment • Yesterday</p>
                         </div>
                     </div>
-                    <div class="transaction-amount negative">- AB 120</div>
+                    <div class="transaction-amount">- AB 120</div>
                 </li>
 
                 <li class="transaction-item">
                     <div class="transaction-left">
-                        <div class="transaction-icon">💼</div>
+                        <div class="transaction-icon">
+                            <svg class="icon icon-sm" viewBox="0 0 24 24">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
                         <div class="transaction-info">
                             <h4>Patient Co-pay - Sarah M.</h4>
                             <p>AB received • 3 days ago</p>
@@ -694,7 +846,11 @@
 
                 <li class="transaction-item">
                     <div class="transaction-left">
-                        <div class="transaction-icon">🔄</div>
+                        <div class="transaction-icon">
+                            <svg class="icon icon-sm" viewBox="0 0 24 24">
+                                <path d="M21 12a9 9 0 1 1-9-9M12 3v9l4 4"/>
+                            </svg>
+                        </div>
                         <div class="transaction-info">
                             <h4>Anthrobucks Purchase</h4>
                             <p>USD to AB • 5 days ago</p>
@@ -705,62 +861,124 @@
 
                 <li class="transaction-item">
                     <div class="transaction-left">
-                        <div class="transaction-icon">🏥</div>
+                        <div class="transaction-icon">
+                            <svg class="icon icon-sm" viewBox="0 0 24 24">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                        </div>
                         <div class="transaction-info">
                             <h4>Eurythmy Therapist - Lisa K.</h4>
                             <p>AB payment • 1 week ago</p>
                         </div>
                     </div>
-                    <div class="transaction-amount negative">- AB 95</div>
+                    <div class="transaction-amount">- AB 95</div>
                 </li>
             </ul>
         </div>
+    </main>
 
-        <!-- Network Directory -->
-        <div class="network-section">
-            <div class="section-header">
-                <h2 class="section-title">Anthrobucks Network</h2>
-                <a href="#" class="view-all">View Directory →</a>
+    <!-- AI Chat Widget -->
+    <div class="chat-widget">
+        <button class="chat-button" onclick="toggleChat()">
+            <svg class="icon icon-lg" viewBox="0 0 24 24">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+        </button>
+
+        <div class="chat-container" id="chatContainer">
+            <div class="chat-header">
+                <h3>Business Intelligence</h3>
+                <button class="chat-close" onclick="toggleChat()">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
             </div>
 
-            <div class="network-grid">
-                <div class="network-card">
-                    <div class="network-icon">🌾</div>
-                    <h4>Biodynamic Farms</h4>
-                    <p>8 accepting AB</p>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message assistant">
+                    Hi Dr. Smith! I'm your AI assistant. I can help you understand your business finances, staff payroll, Anthrobucks activity, and more. What would you like to know?
                 </div>
+            </div>
 
-                <div class="network-card">
-                    <div class="network-icon">🏫</div>
-                    <h4>Waldorf Schools</h4>
-                    <p>5 accepting AB</p>
-                </div>
+            <div class="chat-suggestions">
+                <button class="suggestion-btn" onclick="askQuestion('What was my total payroll last month?')">
+                    What was my total payroll last month?
+                </button>
+                <button class="suggestion-btn" onclick="askQuestion('Show me my Anthrobucks circulation trends')">
+                    Show me my Anthrobucks circulation trends
+                </button>
+                <button class="suggestion-btn" onclick="askQuestion('How much have I earned from patient AB payments?')">
+                    How much have I earned from patient AB payments?
+                </button>
+            </div>
 
-                <div class="network-card">
-                    <div class="network-icon">🏥</div>
-                    <h4>Health Practitioners</h4>
-                    <p>24 accepting AB</p>
-                </div>
-
-                <div class="network-card">
-                    <div class="network-icon">🎨</div>
-                    <h4>Artisans</h4>
-                    <p>12 accepting AB</p>
-                </div>
-
-                <div class="network-card">
-                    <div class="network-icon">🧘</div>
-                    <h4>Therapists</h4>
-                    <p>18 accepting AB</p>
-                </div>
-
-                <div class="network-card">
-                    <div class="network-icon">🎁</div>
-                    <h4>Social Initiatives</h4>
-                    <p>6 receiving Leaven</p>
-                </div>
+            <div class="chat-input-container">
+                <textarea
+                    class="chat-input"
+                    id="chatInput"
+                    placeholder="Ask about your finances, payroll, or AB activity..."
+                    rows="3"
+                    onkeydown="handleKeyPress(event)"
+                ></textarea>
             </div>
         </div>
-    </main>
+    </div>
+
+    <script>
+        function toggleChat() {
+            const container = document.getElementById('chatContainer');
+            container.classList.toggle('active');
+        }
+
+        function addMessage(text, type) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${type}`;
+            messageDiv.textContent = text;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function askQuestion(question) {
+            addMessage(question, 'user');
+
+            // Simulate AI response
+            setTimeout(() => {
+                let response = '';
+
+                if (question.includes('payroll')) {
+                    response = 'Your total payroll last month was $18,450. This included 3 full-time staff members and 2 part-time assistants. Payroll costs are up 8% from the previous month due to the new hire in your front office.';
+                } else if (question.includes('circulation') || question.includes('trends')) {
+                    response = 'Your Anthrobucks circulation is healthy! In the past 30 days, you\'ve received AB 680 from patients and spent AB 540 with local practitioners and farms. Your AB velocity (how quickly they circulate) is 2.3x the network average, meaning they\'re actively supporting the community.';
+                } else if (question.includes('earned') || question.includes('patient')) {
+                    response = 'You\'ve earned AB 680 from patient payments this month. That\'s approximately $650 in equivalent value. Your top AB-paying patients are Sarah M. (AB 85), John D. (AB 120), and the Miller family (AB 95). About 15% of your patient payments are now in Anthrobucks!';
+                } else if (question.includes('staff') || question.includes('employee')) {
+                    response = 'You have 5 staff members: 3 full-time (Sarah - Office Manager at $4,200/mo, Tom - Nurse at $5,800/mo, Lisa - Therapist at $5,200/mo) and 2 part-time assistants (combined $3,250/mo). Total monthly payroll: $18,450.';
+                } else if (question.includes('expense') || question.includes('spending')) {
+                    response = 'Your top expenses this month: Payroll ($18,450), Rent & Utilities ($3,200), Medical Supplies ($2,100), Insurance ($1,800), and Biodynamic Farm purchases in AB ($450). Total: $26,000. You\'re tracking 5% under budget.';
+                } else if (question.includes('leaven') || question.includes('donated')) {
+                    response = 'You\'ve contributed AB 420 to the Leaven cycle this month. These transformed Anthrobucks are supporting the Waldorf School scholarship fund and the Community Garden initiative. Your Leaven contributions have helped 3 social good organizations this quarter.';
+                } else {
+                    response = 'I can help you with questions about payroll, expenses, Anthrobucks activity, staff information, and financial trends. Try asking about your payroll costs, AB circulation, or recent expenses!';
+                }
+
+                addMessage(response, 'assistant');
+            }, 1000);
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                const input = document.getElementById('chatInput');
+                const question = input.value.trim();
+
+                if (question) {
+                    askQuestion(question);
+                    input.value = '';
+                }
+            }
+        }
+    </script>
 </body>
 </html>
