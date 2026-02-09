@@ -391,9 +391,161 @@
             color: var(--text-default);
         }
 
+        /* AI Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: var(--space-xl);
+            right: var(--space-xl);
+            z-index: 1000;
+        }
+
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            background: var(--surface-primary);
+            color: var(--text-inverse);
+            border: none;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-xl);
+            transition: all 0.2s ease;
+        }
+
+        .chat-button:hover {
+            background: var(--surface-primary-hover);
+            transform: scale(1.05);
+        }
+
+        .chat-container {
+            display: none;
+            position: fixed;
+            bottom: calc(var(--space-xl) + 70px);
+            right: var(--space-xl);
+            width: 400px;
+            height: 600px;
+            background: var(--surface-elevated);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-container.active {
+            display: flex;
+        }
+
+        .chat-header {
+            padding: var(--space-lg);
+            background: var(--surface-primary);
+            color: var(--text-inverse);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            font-family: var(--font-display);
+            font-size: var(--text-lg);
+            font-weight: 600;
+        }
+
+        .chat-close {
+            background: none;
+            border: none;
+            color: var(--text-inverse);
+            cursor: pointer;
+            padding: var(--space-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .chat-message {
+            max-width: 80%;
+            padding: var(--space-md) var(--space-lg);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-sm);
+            line-height: 1.5;
+        }
+
+        .chat-message.assistant {
+            background: var(--surface-subtle);
+            color: var(--text-default);
+            align-self: flex-start;
+        }
+
+        .chat-message.user {
+            background: var(--surface-primary);
+            color: var(--text-inverse);
+            align-self: flex-end;
+        }
+
+        .chat-suggestions {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            padding: 0 var(--space-lg) var(--space-lg);
+        }
+
+        .suggestion-btn {
+            padding: var(--space-md);
+            background: var(--surface-subtle);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            font-size: var(--text-sm);
+            color: var(--text-default);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .suggestion-btn:hover {
+            background: var(--surface-accent);
+            border-color: var(--surface-secondary);
+        }
+
+        .chat-input-container {
+            padding: var(--space-lg);
+            border-top: 1px solid var(--border-default);
+            background: var(--surface-elevated);
+        }
+
+        .chat-input {
+            width: 100%;
+            padding: var(--space-md);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: var(--text-sm);
+            resize: none;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--surface-secondary);
+        }
+
         @media (max-width: 768px) {
             .charts-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .chat-container {
+                width: calc(100vw - var(--space-xl) * 2);
+                height: 500px;
             }
         }
     </style>
@@ -922,6 +1074,109 @@
                 });
             }
         }
+
+        // Chat widget functions
+        function toggleChat() {
+            const container = document.getElementById('chatContainer');
+            container.classList.toggle('active');
+        }
+
+        function addMessage(text, type) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${type}`;
+            messageDiv.textContent = text;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function askQuestion(question) {
+            addMessage(question, 'user');
+
+            // Simulate AI response
+            setTimeout(() => {
+                let response = '';
+
+                if (question.includes('payroll')) {
+                    response = 'Your total payroll last month was $18,450. This included 3 full-time staff members and 2 part-time assistants. Payroll costs are up 8% from the previous month due to the new hire in your front office.';
+                } else if (question.includes('circulation') || question.includes('trends')) {
+                    response = 'Your Anthrobucks circulation is healthy! In the past 30 days, you\'ve received AB 680 from patients and spent AB 540 with local practitioners and farms. Your AB velocity (how quickly they circulate) is 2.3x the network average, meaning they\'re actively supporting the community.';
+                } else if (question.includes('earned') || question.includes('patient')) {
+                    response = 'You\'ve earned AB 680 from patient payments this month. That\'s approximately $650 in equivalent value. Your top AB-paying patients are Sarah M. (AB 85), John D. (AB 120), and the Miller family (AB 95). About 15% of your patient payments are now in Anthrobucks!';
+                } else if (question.includes('staff') || question.includes('employee')) {
+                    response = 'You have 5 staff members: 3 full-time (Sarah - Office Manager at $4,200/mo, Tom - Nurse at $5,800/mo, Lisa - Therapist at $5,200/mo) and 2 part-time assistants (combined $3,250/mo). Total monthly payroll: $18,450.';
+                } else if (question.includes('expense') || question.includes('spending')) {
+                    response = 'Your top expenses this month: Payroll ($18,450), Rent & Utilities ($3,200), Medical Supplies ($2,100), Insurance ($1,800), and Biodynamic Farm purchases in AB ($450). Total: $26,000. You\'re tracking 5% under budget.';
+                } else if (question.includes('leaven') || question.includes('donated')) {
+                    response = 'You\'ve contributed AB 420 to the Leaven cycle this month. These transformed Anthrobucks are supporting the Waldorf School scholarship fund and the Community Garden initiative. Your Leaven contributions have helped 3 social good organizations this quarter.';
+                } else {
+                    response = 'I can help you with questions about payroll, expenses, Anthrobucks activity, staff information, and financial trends. Try asking about your payroll costs, AB circulation, or recent expenses!';
+                }
+
+                addMessage(response, 'assistant');
+            }, 1000);
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                const input = document.getElementById('chatInput');
+                const question = input.value.trim();
+
+                if (question) {
+                    askQuestion(question);
+                    input.value = '';
+                }
+            }
+        }
     </script>
+
+    <!-- AI Chat Widget -->
+    <div class="chat-widget">
+        <button class="chat-button" onclick="toggleChat()">
+            <svg class="icon icon-lg" viewBox="0 0 24 24">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+        </button>
+
+        <div class="chat-container" id="chatContainer">
+            <div class="chat-header">
+                <h3>Business Intelligence</h3>
+                <button class="chat-close" onclick="toggleChat()">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message assistant">
+                    Hi Dr. Smith! I'm your AI assistant. I can help you understand your business finances, staff payroll, Anthrobucks activity, and more. What would you like to know?
+                </div>
+            </div>
+
+            <div class="chat-suggestions">
+                <button class="suggestion-btn" onclick="askQuestion('What was my total payroll last month?')">
+                    What was my total payroll last month?
+                </button>
+                <button class="suggestion-btn" onclick="askQuestion('Show me my Anthrobucks circulation trends')">
+                    Show me my Anthrobucks circulation trends
+                </button>
+                <button class="suggestion-btn" onclick="askQuestion('How much have I earned from patient AB payments?')">
+                    How much have I earned from patient AB payments?
+                </button>
+            </div>
+
+            <div class="chat-input-container">
+                <textarea
+                    class="chat-input"
+                    id="chatInput"
+                    placeholder="Ask about your finances, payroll, or AB activity..."
+                    rows="3"
+                    onkeydown="handleKeyPress(event)"
+                ></textarea>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
