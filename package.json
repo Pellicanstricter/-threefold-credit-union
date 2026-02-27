@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Threefold Credit Union website",
   "scripts": {
-    "start": "npx serve -s . -l ${PORT:-8080}"
+    "start": "npx serve -s . -l $PORT"
   },
   "dependencies": {
     "serve": "^14.2.1"
